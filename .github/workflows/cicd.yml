@@ -37,4 +37,4 @@ jobs:
           docker rm app-tracker-backend || true
 
       - name: Run new container
-        run: docker run -d --name app-tracker-backend -p 4000:4000 sushanthreddysingireddy/app-tracker-backend:latest
+        run: docker run -d --name app-tracker-backend -p 4000:4000 -e MONGODB_URI=${{ secrets.MONGODB_URI }} sushanthreddysingireddy/app-tracker-backend:latest
