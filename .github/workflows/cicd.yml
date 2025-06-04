@@ -1,0 +1,40 @@
+name: Deploy Frontend
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs: 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Build Docker image
+        run: docker build -t sushanthreddysingireddy/app-tracker-backend .
+      
+      - name: Push Docker image
+        run: docker push sushanthreddysingireddy/app-tracker-backend:latest
+
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Pull Docker image
+        run: docker pull sushanthreddysingireddy/app-tracker-backend:latest
+      
+      - name: Stop and remove existing container
+        run: |
+          docker stop app-tracker-backend || true
+          docker rm app-tracker-backend || true
+
+      - name: Run new container
+        run: docker run -d --name app-tracker-backend -p 4000:4000 sushanthreddysingireddy/app-tracker-backend:latest
