@@ -9,9 +9,10 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const IP = process.env.IP || 'localhost';
 
 const corsOptions = {
-  origin: 'http://localhost:3000', // Replace with your frontend's URL
+  origin: `http://${IP}:3000`, // Replace with your frontend's URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
   allowedHeaders: ['Content-Type'], // Allowed headers
 };
