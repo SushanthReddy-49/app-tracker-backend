@@ -31,10 +31,13 @@ jobs:
       - name: Pull Docker image
         run: docker pull sushanthreddysingireddy/app-tracker-backend:latest
       
+      - name: Create Docker network
+        run: docker network create app-tracker-network || true
+        
       - name: Stop and remove existing container
         run: |
           docker stop app-tracker-backend || true
           docker rm app-tracker-backend || true
 
       - name: Run new container
-        run: docker run -d -p 4000:4000 --name app-tracker-backend -e MONGODB_URI='${{ secrets.MONGODB_URI }}' sushanthreddysingireddy/app-tracker-backend:latest
+        run: docker run -d -p 4000:4000 --name app-tracker-backend -e MONGODB_URI='${{ secrets.MONGODB_URI }}' --network app-tracker-network sushanthreddysingireddy/app-tracker-backend:latest
