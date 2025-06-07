@@ -29,4 +29,11 @@ router.put('/:id', async (req, res) => {
 }
 );
 
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  await Job.findByIdAndDelete(id);
+  res.status(200).json({ message: 'Job deleted successfully' });
+}
+);
+
 export default router;
